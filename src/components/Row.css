@@ -18,6 +18,7 @@
   justify-content: center;
   visibility: hidden;
 }
+
 .slider_arrow-right {
   background-clip: content-box;
   padding: 20px 0;
@@ -78,6 +79,7 @@
 }
 .row_poster:hover {
   transform: scale(1.08);
+  border: 1px solid white;
 }
 
 @media screen and (min-width: 1200px) {
