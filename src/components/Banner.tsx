@@ -4,9 +4,23 @@ import styled from 'styled-components';
 import requests from '../api/requests';
 import './Banner.css';
 
-const Banner = () => {
-  const [movie, setMovie] = useState([]);
-  const [isClicked, setIsClicked] = useState(false);
+interface Video {
+  key: string;
+}
+
+interface Movie {
+  title: string;
+  name: string;
+  original_name: string;
+  backdrop_path: string;
+  overview: string;
+  videos: {
+    results: Video[];
+  };
+}
+const Banner: React.FC = () => {
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
   useEffect(() => {
     fetchData();
   }, []);
@@ -21,8 +35,8 @@ const Banner = () => {
     });
     setMovie(movieDetail);
   };
-  const truncate = (str, n) => {
-    return str?.length > n ? str.substring(0, n) + '...' : str;
+  const truncate = (str: string | undefined, n: number): string => {
+    return str && str.length > n ? str.substring(0, n) + '...' : str || '';
   };
 
   if (isClicked) {
@@ -31,10 +45,10 @@ const Banner = () => {
         <Container>
           <HomeContainer>
             <Iframe
-              src={`https://www.youtube.com/embed/${movie.videos.results[0].key}?controls=0&autoplay=1&loop=1&mute=1&playlist=${movie.videos.results[0].key}`}
+              src={`https://www.youtube.com/embed/${movie?.videos.results[0].key}?controls=0&autoplay=1&loop=1&mute=1&playlist=${movie?.videos.results[0].key}`}
               width="640"
               height="360"
-              frameborder="0"
+              frameBorder="0"
               allow="autoplay; fullscreen"
             ></Iframe>
           </HomeContainer>
@@ -47,14 +61,14 @@ const Banner = () => {
       <header
         className="banner"
         style={{
-          backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie.backdrop_path}")`,
+          backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
           backgroundPosition: 'top center',
           backgroundSize: 'cover',
         }}
       >
         <div className="banner_contents">
           <h1 className="banner_title">
-            {movie.title || movie.name || movie.original_name}
+            {movie?.title || movie?.name || movie?.original_name}
           </h1>
           <div className="banner_buttons">
             {movie?.videos?.results[0]?.key && (
@@ -66,7 +80,9 @@ const Banner = () => {
               </button>
             )}
           </div>
-          <p className='"banner_description'>{truncate(movie.overview, 100)}</p>
+          <p className='"banner_description'>
+            {truncate(movie?.overview, 100)}
+          </p>
           <div className="banner--fadeBottom"></div>
         </div>
       </header>

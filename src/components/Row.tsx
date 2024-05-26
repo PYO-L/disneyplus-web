@@ -1,25 +1,41 @@
 import axios from '../api/axios';
 import React, { useEffect, useState } from 'react';
 import './Row.css';
-import MovieModal from './MovieModal/modal';
+import MovieModal from './MovieModal/MovieModal';
 
-const Row = ({ title, id, fetchUrl }) => {
-  const [movies, setMovies] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [movieSelected, setMovieSelected] = useState({});
+interface Movie {
+  id: number;
+  backdrop_path: string;
+  name: string;
+}
+
+interface RowProps {
+  title: string;
+  id: string;
+  fetchUrl: string;
+}
+const Row: React.FC<RowProps> = ({ title, id, fetchUrl }) => {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [movieSelected, setMovieSelected] = useState<Movie | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     fetchMovie();
   }, []);
   const fetchMovie = async () => {
-    const response = await axios.get(fetchUrl);
-
-    setMovies(response.data.results);
+    try {
+      const response = await axios.get(fetchUrl);
+      setMovies(response.data.results);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const handleModal = (movie) => {
+
+  const handleModal = (movie: Movie) => {
     setModalOpen(true);
     setMovieSelected(movie);
-    console.log(movieSelected);
   };
 
   return (
@@ -30,7 +46,8 @@ const Row = ({ title, id, fetchUrl }) => {
           <span
             className="arrow"
             onClick={() => {
-              document.getElementById(id).scrollLeft -= window.innerWidth - 80;
+              const element = document.getElementById(id);
+              if (element) element.scrollLeft -= window.innerWidth - 80;
             }}
           >
             {'<'}
@@ -55,7 +72,8 @@ const Row = ({ title, id, fetchUrl }) => {
           <span
             className="arrow"
             onClick={() => {
-              document.getElementById(id).scrollLeft += window.innerWidth - 80;
+              const element = document.getElementById(id);
+              if (element) element.scrollLeft += window.innerWidth - 80;
             }}
           >
             {'>'}
@@ -63,12 +81,8 @@ const Row = ({ title, id, fetchUrl }) => {
         </div>
       </div>
 
-      {modalOpen && (
-        <MovieModal
-          {...movieSelected}
-          overview={movieSelected.overview}
-          setmodalOpen={setModalOpen}
-        />
+      {modalOpen && movieSelected && (
+        <MovieModal {...movieSelected} setModalOpen={setModalOpen} />
       )}
     </div>
   );

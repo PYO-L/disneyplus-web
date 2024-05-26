@@ -1,12 +1,16 @@
-import './App.css';
-import Nav from './components/Nav';
-import styled from 'styled-components';
-import Banner from './components/Banner';
-import Category from './components/Category';
-import Row from './components/Row';
-import requests from './api/requests';
+import './MainPage.css';
+import React from 'react';
+import Nav from '../components/Nav';
 
-function App() {
+import Banner from '../components/Banner';
+import Category from '../components/Category';
+import Row from '../components/Row';
+import requests from '../api/requests';
+import styled from 'styled-components';
+
+interface MainPageProps {}
+
+const MainPage: React.FC<MainPageProps> = () => {
   return (
     <Container>
       <Nav />
@@ -23,9 +27,8 @@ function App() {
       <Row title="Comedy Movie" id="CM" fetchUrl={requests.fetchComedyMovies} />
     </Container>
   );
-}
-
-export default App;
+};
+export default MainPage;
 
 const Container = styled.main`
   position: relative;

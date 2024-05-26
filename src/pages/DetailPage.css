@@ -1,0 +1,21 @@
+.presentation {
+  margin: 80px 100px;
+}
+
+.movie-detail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+.movie-img {
+  max-width: 800px;
+
+  align-items: center;
+}
+.span {
+  position: absolute;
+  margin: 300px 0px 0px 700px;
+}

@@ -1,15 +1,27 @@
 import React from 'react';
 import './modal.css';
-const MovieModal = ({
-  setmodalOpen,
+
+interface MovieModalProps {
+  setModalOpen: (open: boolean) => void;
+  overview?: string;
+  backdrop_path?: string;
+  name?: string;
+  title?: string;
+  release_date?: string;
+  vote_average?: number;
+  first_air_date?: string;
+}
+const MovieModal: React.FC<MovieModalProps> = ({
+  setModalOpen,
   overview,
   backdrop_path,
   name,
   title,
-  release_data,
+  release_date,
   vote_average,
   first_air_date,
 }) => {
+  console.log(backdrop_path);
   return (
     <div className="presentation" role="presentation">
       <div className="wrapper-modal">
@@ -17,7 +29,7 @@ const MovieModal = ({
           <span
             className="modal-close"
             onClick={() => {
-              setmodalOpen(false);
+              setModalOpen(false);
             }}
           >
             X
@@ -31,7 +43,7 @@ const MovieModal = ({
           <div className="modal-content">
             <p className="movie-details">
               <span>100% for you</span>{' '}
-              {release_data ? release_data : first_air_date}
+              {release_date ? release_date : first_air_date}
             </p>
             <p className="modal-rating">평점: {vote_average}</p>
             <h2 className="modal-title">{title ? title : name}</h2>
